@@ -2,19 +2,16 @@
 include 'db.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Mengambil data dari form
-    $title = $_POST['title'];
-    $author = $_POST['author'];
-    $published_year = $_POST['published_year'];
-    $genre = $_POST['genre'];
+    $title = htmlspecialchars(trim($_POST['title']));
+    $author = htmlspecialchars(trim($_POST['author']));
+    $published_year = intval($_POST['published_year']);
+    $genre = htmlspecialchars(trim($_POST['genre']));
 
-    // Memperbarui data buku di database
     $stmt = $pdo->prepare("INSERT INTO books (title, author, published_year, genre) VALUES (?, ?, ?, ?)");
     $stmt->execute([$title, $author, $published_year, $genre]);
 
-    // Mengalihkan ke halaman index setelah penambahan
     header("Location: index.php");
-    exit; // Menghentikan eksekusi skrip setelah pengalihan
+    exit();
 }
 ?>
 
@@ -23,96 +20,38 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Book</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f9;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        .form-container {
-            background: #ffffff;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            width: 400px;
-        }
-
-        .form-container h2 {
-            margin-bottom: 20px;
-            font-size: 24px;
-            color: #333;
-            text-align: center;
-        }
-
-        .form-container label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-
-        .form-container input {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 14px;
-        }
-
-        .form-container button {
-            width: 100%;
-            padding: 10px;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-
-        .form-container button:hover {
-            background-color: #0056b3;
-        }
-
-        .form-container a {
-            display: block;
-            margin-top: 10px;
-            text-align: center;
-            color: #007bff;
-            text-decoration: none;
-        }
-
-        .form-container a:hover {
-            text-decoration: underline;
-        }
-    </style>
+    <title>Tambah Buku</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
-    <div class="form-container">
-        <h2>Add Book</h2>
+<body class="bg-light d-flex justify-content-center align-items-center" style="height: 100vh;">
+    <div class="container p-4 bg-white shadow rounded" style="max-width: 500px;">
+        <h2 class="text-center mb-4">Tambah Buku</h2>
         <form action="create.php" method="POST">
-            <label for="title">Title:</label>
-            <input type="text" id="title" name="title" placeholder="Enter book title" required>
+            <div class="mb-3">
+                <label for="title" class="form-label">Judul:</label>
+                <input type="text" id="title" name="title" placeholder="Enter book title" class="form-control" required>
+            </div>
 
-            <label for="author">Author:</label>
-            <input type="text" id="author" name="author" placeholder="Enter author name" required>
+            <div class="mb-3">
+                <label for="author" class="form-label">Pengarang:</label>
+                <input type="text" id="author" name="author" placeholder="Enter author name" class="form-control" required>
+            </div>
 
-            <label for="published_year">Published Year:</label>
-            <input type="number" id="published_year" name="published_year" placeholder="Enter published year" required>
+            <div class="mb-3">
+                <label for="published_year" class="form-label">Tahun:</label>
+                <input type="number" id="published_year" name="published_year" placeholder="Enter published year" class="form-control" required>
+            </div>
 
-            <label for="genre">Genre:</label>
-            <input type="text" id="genre" name="genre" placeholder="Enter genre" required>
+            <div class="mb-3">
+                <label for="genre" class="form-label">Genre:</label>
+                <input type="text" id="genre" name="genre" placeholder="Enter genre" class="form-control" required>
+            </div>
 
-            <button type="submit">Submit</button>
+            <button type="submit" class="btn btn-primary w-100">Submit</button>
         </form>
-        <a href="index.php">Back</a>
+        <a href="index.php" class="d-block mt-3 text-center text-decoration-none text-primary">Back</a>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
